@@ -1,0 +1,59 @@
+import BrandModel from '../models/brandModel.js'
+
+// Create
+export const addBrand = async (req, res) => {
+    try {
+        const brand = new BrandModel(req.body)
+        await brand.save()
+        res.status(201).send("Brand created")
+    } catch (err) {
+        res.status(400).send(err)
+    }
+}
+
+// Read All
+export const getBrands = async (_, res) => {
+    try {
+        const brands = await BrandModel.find({})
+        res.status(200).send(brands)
+    }
+    catch (err) {
+        res.status(400).send(err)
+    }
+
+}
+
+// Read One
+export const getBrand = async (req, res) => {
+    try {
+        const brand = await BrandModel.find({ _id: req.params.id })
+        res.status(200).send(brand)
+    }
+    catch (err) {
+        res.status(400).send(err)
+    }
+
+}
+
+// Update
+export const updateBrand = async (req, res) => {
+    try {
+        const brand = await BrandModel.findByIdAndUpdate(req.params.id, req.body)
+        await brand.save()
+        res.status(201).send("Brand updated")
+    }
+    catch (err) {
+        res.status(400).send(err)
+    }
+}
+
+// Delete
+export const deleteBrand = async (req, res) => {
+    try {
+        const brand = await BrandModel.findByIdAndDelete(req.params.id)
+        res.status(201).send("Brand deleted")
+    }
+    catch (err) {
+        res.status(400).send(err)
+    }
+}
