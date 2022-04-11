@@ -1,0 +1,11 @@
+.product-filter {
+    display: flex;
+    align-items: center;
+    width: 70%;
+    padding: 15px 3vw;
+    font-size: clamp(0.8rem, 2vw, 1.1rem);
+}
+
+.product-filter > * {
+    margin-right: 3vw;
+}

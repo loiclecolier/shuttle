@@ -1,0 +1,33 @@
+.product-search {
+    width: 30%;
+    position: relative;
+}
+
+.product-search input {
+    height: 100%;
+    width: 100%;
+    background-color: transparent;
+    border: none;
+    border-left: 1px solid rgb(220, 220, 220);
+    padding-left: calc(70 * var(--res));
+    font-size: clamp(0.8rem, 2vw, 1.1rem);
+}
+
+.product-search input:focus,
+.product-search input:hover {
+    outline: none !important;
+}
+
+.product-search .search-icon {
+    color: rgb(146, 146, 144);
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: calc(20 * var(--res));
+    width: calc(30 * var(--res));
+    transition: .3s;
+}
+
+.product-search input:focus + .search-icon {
+    color: #222;
+}
