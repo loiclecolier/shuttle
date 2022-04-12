@@ -2,14 +2,14 @@ import React, { useEffect } from 'react'
 import './Product.css'
 import { useLocation } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import { getBrands } from '../../redux/brands/brandReducer'
-import { getCategories } from '../../redux/categories/categoryReducer'
+import { getBrands } from '../../../redux/brands/brandReducer'
+import { getCategories } from '../../../redux/categories/categoryReducer'
 import Placeholder from './placeholder-product.png'
 
 export default function Product() {
 
   const location = useLocation()
-  const { slug, name, price, description } = location.state
+  const { name, price, description } = location.state
 
   const {brands, categories} = useSelector(state => ({
     ...state.brandReducer,
