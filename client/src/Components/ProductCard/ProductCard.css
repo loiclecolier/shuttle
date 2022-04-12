@@ -1,3 +1,7 @@
+.link-product-card {
+    text-decoration: none;
+}
+
 .product-card {
     max-width: 250px;
     border: 1px solid rgb(220, 220, 220);
@@ -22,6 +26,8 @@
     justify-content: space-between;
     padding: calc(15 * var(--res));
     padding-top: 0;
+    color: #222;
+    font-size: clamp(0.8rem, 2vw, 1.1rem);
 }
 
 .product-card .product-price {
@@ -36,6 +42,7 @@
     padding: calc(15 * var(--res));
     border-radius: 0 0 5px 5px;
     cursor: pointer;
+    font-size: clamp(0.8rem, 2vw, 1.1rem);
     transition: .3s;
 }
 
