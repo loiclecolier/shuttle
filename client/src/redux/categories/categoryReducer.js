@@ -26,7 +26,7 @@ export const getCategories = () => dispatch => {
     .then(data => {
         dispatch({
             type: 'LOADCATEGORIES',
-            payload: data
+            payload: data.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0))
         })
     })
 }

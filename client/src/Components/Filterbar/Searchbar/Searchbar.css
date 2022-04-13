@@ -13,11 +13,6 @@
     font-size: clamp(0.8rem, 2vw, 1.1rem);
 }
 
-.product-search input:focus,
-.product-search input:hover {
-    outline: none !important;
-}
-
 .product-search .search-icon {
     color: rgb(146, 146, 144);
     position: absolute;

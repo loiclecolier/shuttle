@@ -6,6 +6,7 @@ import Product from "./Containers/Shop/Product/Product"
 import Dashboard from "./Containers/Dashboard/Dashboard"
 import ProductsDashboard from "./Containers/Dashboard/Products/Products"
 import HomeDashboard from "./Containers/Dashboard/Home/Home"
+import AddProduct from "./Containers/Dashboard/Products/AddProduct/AddProduct"
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route path='/dashboard' element={<Dashboard />}>
             <Route path='/dashboard/home' element={<HomeDashboard />} />
             <Route path='/dashboard/products' element={<ProductsDashboard />} />
+            <Route path='/dashboard/products/add' element={<AddProduct />} />
           </Route>
           <Route path='*' element={<h1>Not Found 404</h1>} />
         </Routes>

@@ -1,0 +1,88 @@
+.dashboard-products-actions ~ .filter-bar {
+    border-top: 1px solid rgb(220, 220, 220);
+}
+
+.dashboard-products-title {
+    margin: 20px 3vw 5px;
+}
+
+.dashboard-products-actions {
+    display: flex;
+}
+.dashboard-products-actions .action-product {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: calc(100%/3);
+    color: #222;
+    text-decoration: none;
+    cursor: pointer;
+    padding: 10px 0;
+    border-right: 1px solid rgb(220, 220, 220);
+    border-bottom: 1px solid rgb(220, 220, 220);
+    font-size: clamp(0.8rem, 2vw, 1rem);
+    transition: .3s; 
+}
+
+.dashboard-products-actions .action-product:hover {
+    background-color: #e8e7df;
+}
+
+.dashboard-products-list {
+    width: 100%;
+    font-size: clamp(0.7rem, 2vw, 1rem);
+}
+
+.dashboard-products-list thead {
+    border-top: 1px solid rgb(220, 220, 220);
+    border-bottom: 0.5px solid rgb(220, 220, 220);
+    background-color: #e8e7df;
+}
+
+.dashboard-products-list thead th {
+    padding: 7.5px 0;
+}
+
+.dashboard-products-list .product-item {
+    width: 100%;
+    border-bottom: 0.5px solid rgb(220, 220, 220);
+    text-align: center;
+    cursor: pointer;
+    color: #222;
+    text-decoration: none;
+    transition: .3s;
+}
+
+.dashboard-products-list .product-item tr {
+    width: 100%;
+}
+
+.dashboard-products-list .product-item:hover {
+    background-color: #e8e7df;
+}
+
+.dashboard-products-list .product-item td {
+    padding: 5px 0;
+}
+
+.dashboard-products-list .product-item .slug {
+    font-style: italic;
+}
+
+.dashboard-products-list .product-item td svg {
+    color: #222;
+    width: calc(40 * var(--res));
+}
+
+.dashboard-products-list .product-item .edit,
+.dashboard-products-list .product-item .delete {
+    cursor: pointer;
+}
+
+.dashboard-products-list .product-item .delete svg {
+    color: rgb(180, 0, 0);
+}
+
+.dashboard-products-list tfoot td {
+    text-align: right;
+}
