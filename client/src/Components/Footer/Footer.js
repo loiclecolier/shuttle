@@ -10,7 +10,7 @@ export default function Footer() {
             <img src={Logo} alt="Shuttle Logo" />
         </Link>
         <div className="footer-author">
-            Créé par <a href="https://www.linkedin.com/in/loic-lecolier/" target="_blank">Loïc Lécolier</a>
+            Créé par <a href="https://www.linkedin.com/in/loic-lecolier/" target="_blank" rel="noreferrer">Loïc Lécolier</a>
         </div>
         <nav className="footer-nav">
             <ul>

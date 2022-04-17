@@ -1,0 +1,40 @@
+.loader {
+    display: flex;
+    margin: 20px 0;
+}
+
+.shuttle-loader {
+    height: calc(60 * var(--res));
+    width: auto;
+    animation: 3s shuttle-animation linear infinite;
+}
+
+.racket-loader {
+    width: calc(120 * var(--res));
+}
+
+.racket-loader.left {
+    transform: translate(calc(-200 * var(--res)), calc(40 * var(--res))) rotate(20deg);
+}
+
+.racket-loader.right {
+    transform: translate(calc(200 * var(--res)), calc(40 * var(--res))) rotate(-20deg);
+}
+
+@keyframes shuttle-animation {
+    0% {
+        transform: rotate(-20deg) translateX(calc(-200 * var(--res))) scaleX(-1);
+    }
+    49% {
+        transform: rotate(20deg) translateX(calc(200 * var(--res))) scaleX(-1);
+    }
+    50% {
+        transform: rotate(20deg) translateX(calc(200 * var(--res))) scaleX(1);
+    }
+    99% {
+        transform: rotate(-20deg) translateX(calc(-200 * var(--res))) scaleX(1);
+    }
+    100% {
+        transform: rotate(-20deg) translateX(calc(-200 * var(--res))) scaleX(-1);
+    }
+}

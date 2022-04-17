@@ -39,7 +39,6 @@ const ProductSchema = new mongoose.Schema({
     },
     percentagePromo: {
         type: Number,
-        required: true,
         default: 0
     }
 })

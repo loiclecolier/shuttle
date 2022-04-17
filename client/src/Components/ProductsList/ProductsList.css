@@ -3,3 +3,17 @@
     flex-wrap: wrap;
     justify-content: center;
 }
+
+.products-loader {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.shop-empty-list {
+    width: 100%;
+    text-align: center;
+    font-size: clamp(1rem, 2vw, 1.3rem);
+    font-weight: 500;
+    margin: 20px 0;
+}
