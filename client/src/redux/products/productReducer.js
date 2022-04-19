@@ -13,17 +13,25 @@ function productReducer(state = INITIAL_STATE, action)
                 loadingProducts: false
             }
         }
-        case "ADDPRODUCT": {
-            getProducts()
-            return state
-        }
         case "DELETEPRODUCT": {
-            const newProducts = [...state.products]
-            console.log(state.products)
-            newProducts.filter(product => {
+            const oldProducts = [...state.products]
+            const newProducts = oldProducts.filter(product => {
                 return product._id !== action.payload
             })
-            console.log(newProducts)
+            return {
+                ...state,
+                products: newProducts
+            }
+        }
+        case "UPDATEPRODUCT": {
+            const oldProducts = [...state.products]
+            const newProducts = oldProducts.map(item => {
+                if (item._id === action.payload.id) {
+                    action.payload.price *= 100
+                    return action.payload
+                }
+                return item
+            })
             return {
                 ...state,
                 products: newProducts
@@ -62,8 +70,33 @@ export const addProduct = (product) => dispatch => {
         })
     })
     .then(() => {
+        fetch("/api/products")
+        .then(res => res.json())
+        .then(data => {
+            dispatch({
+                type: 'LOADPRODUCTS',
+                payload: data.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0))
+            })
+        })
+    })
+}
+
+export const updateProduct = (product) => dispatch => {
+    fetch("/api/products/" + product.id, {
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json' 
+        },
+        method: 'PATCH', 
+        body: JSON.stringify({
+            ...product,
+            "price": product.price * 100 // convert cent
+        })
+    })
+    .then(() => {
         dispatch({
-            type: 'ADDPRODUCT'
+            type: 'UPDATEPRODUCT',
+            payload: product
         })
     })
 }

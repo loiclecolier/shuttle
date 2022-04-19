@@ -46,7 +46,7 @@ export default function Product() {
               category => category._id === location.state.category
               ).map(category => category.name)}</p>
           </div>
-          <div className="product-description"><span>Description</span><p>{description}</p></div>
+          {description && <div className="product-description"><span>Description</span><p>{description}</p></div> }
         </div>
         <div className="product-quantity">
           <label htmlFor="quantity">Quantité</label>

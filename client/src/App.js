@@ -6,7 +6,8 @@ import Product from "./Containers/Shop/Product/Product"
 import Dashboard from "./Containers/Dashboard/Dashboard"
 import ProductsDashboard from "./Containers/Dashboard/Products/Products"
 import HomeDashboard from "./Containers/Dashboard/Home/Home"
-import AddProduct from "./Containers/Dashboard/Products/AddProduct/AddProduct"
+import AddProduct from "./Containers/Dashboard/Products/FormProduct/AddProduct/AddProduct"
+import UpdateProduct from "./Containers/Dashboard/Products/FormProduct/UpdateProduct/UpdateProduct"
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
             <Route path='/dashboard/home' element={<HomeDashboard />} />
             <Route path='/dashboard/products' element={<ProductsDashboard />} />
             <Route path='/dashboard/products/add' element={<AddProduct />} />
+            <Route path='/dashboard/products/update/:slug' element={<UpdateProduct />} />
           </Route>
           <Route path='*' element={<h1>Not Found 404</h1>} />
         </Routes>
