@@ -37,16 +37,24 @@ export default function Product() {
       </div>
       <div className="product-informations">
         <div className="product-txt">
+
           <h1 className="product-name-brand">{name} <span>{brands.filter(
               brand => brand._id === location.state.brand
-              ).map(brand => brand.name)}</span></h1>
+              ).map(brand => brand.name)}</span>
+          </h1>
+
           <div className="product-price">{(price / 100).toFixed(2)}€</div>
-          <div className="product-category">
-            <span>Catégorie</span><p>{categories.filter(
-              category => category._id === location.state.category
-              ).map(category => category.name)}</p>
-          </div>
+
+          {(categories.filter(category => category._id === location.state.category).map(category => category.name)).length > 0 &&
+            <div className="product-category">
+              <span>Catégorie</span><p>{categories.filter(
+                category => category._id === location.state.category
+                ).map(category => category.name)}</p>
+            </div>
+          }
+
           {description && <div className="product-description"><span>Description</span><p>{description}</p></div> }
+          
         </div>
         <div className="product-quantity">
           <label htmlFor="quantity">Quantité</label>

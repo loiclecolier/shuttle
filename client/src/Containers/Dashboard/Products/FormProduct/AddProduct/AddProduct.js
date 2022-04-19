@@ -121,21 +121,13 @@ export default function AddProduct() {
     } else setErrors(errors => ({...errors, slug: ""}))
 
     // Category validation
-     if (!product.category) {
-      setErrors(errors => ({...errors, category: "La catégorie est requise"}))
-      isValidForm = false
-    }
-    else if (!categoryValidation()) {
+    if (!categoryValidation() && product.category !== "") {
       setErrors(errors => ({...errors, category: "La catégorie n'existe pas"}))
       isValidForm = false
     } else setErrors(errors => ({...errors, category: ""}))
     
     // Brand validation
-    if (!product.brand) {
-      setErrors(errors => ({...errors, brand: "La marque est requise"}))
-      isValidForm = false
-    }
-    else if (!brandValidation()) {
+    if (!brandValidation() && product.brand !== "") {
       setErrors(errors => ({...errors, brand: "La marque n'existe pas"}))
       isValidForm = false
     } else setErrors(errors => ({...errors, brand: ""}))
@@ -227,7 +219,7 @@ export default function AddProduct() {
           <div className="product-category"> 
             <label htmlFor="category">Catégorie</label>
             <select name="category" id="category" onChange={handleInputs} value={product.category}>
-              <option value="" disabled>Sélectionner une catégorie</option>
+              <option value="">Sélectionner une catégorie</option>
               {categories.map(item => { return (
                 <option value={item._id} key={item._id}>{item.name}</option>
               )})}
@@ -238,7 +230,7 @@ export default function AddProduct() {
           <div className="product-brand"> 
             <label htmlFor="brand">Marque</label>
             <select name="brand" id="brand" onChange={handleInputs} value={product.brand}> 
-              <option value="" disabled>Sélectionner une marque</option>
+              <option value="">Sélectionner une marque</option>
               {brands.map(item => { return (
                 <option value={item._id} key={item._id}>{item.name}</option>
               )})}

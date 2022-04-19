@@ -66,6 +66,8 @@ export const addProduct = (product) => dispatch => {
         method: 'POST', 
         body: JSON.stringify({
             ...product,
+            "category": product.category === "" ? null : product.category,
+            "brand": product.brand === "" ? null : product.brand,
             "price": product.price * 100 // convert cent
         })
     })
@@ -90,6 +92,8 @@ export const updateProduct = (product) => dispatch => {
         method: 'PATCH', 
         body: JSON.stringify({
             ...product,
+            "category": product.category === "" ? null : product.category,
+            "brand": product.brand === "" ? null : product.brand,
             "price": product.price * 100 // convert cent
         })
     })

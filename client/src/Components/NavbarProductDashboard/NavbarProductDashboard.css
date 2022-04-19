@@ -1,0 +1,25 @@
+.dashboard-products-actions ~ .filter-bar {
+    border-top: 1px solid rgb(220, 220, 220);
+}
+
+.dashboard-products-actions {
+    display: flex;
+    list-style-type: none;
+}
+.dashboard-products-actions .action-product {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 25%;
+    color: #222;
+    text-decoration: none;
+    padding: 10px 0;
+    border-right: 1px solid rgb(220, 220, 220);
+    border-bottom: 1px solid rgb(220, 220, 220);
+    font-size: clamp(0.8rem, 2vw, 1rem);
+    transition: .3s; 
+}
+
+.dashboard-products-actions .action-product:hover {
+    background-color: #e8e7df;
+}
