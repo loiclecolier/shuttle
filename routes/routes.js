@@ -3,21 +3,16 @@ import { addProduct, getProducts, getProduct, updateProduct, deleteProduct } fro
 import { addBrand, getBrands, getBrand, updateBrand, deleteBrand } from '../controllers/brandControllers.js'
 import { addCategory, getCategories, getCategory, updateCategory, deleteCategory } from '../controllers/categoryControllers.js'
 // import { auth } from '../middleware/auth.js'
+import multer from '../config/multer-config.js'
 
 // création d'un router
 const router = express.Router()
 
-// Path avec ES module
-import path, { dirname } from 'path'
-import { fileURLToPath } from 'url'
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = dirname(__filename)
-
 // PRODUCT
-router.post('/api/products', addProduct)
+router.post('/api/products', multer, addProduct)
 router.get('/api/products', getProducts)
 router.get('/api/products/:id', getProduct)
-router.patch('/api/products/:id', updateProduct)
+router.patch('/api/products/:id', multer, updateProduct)
 router.delete('/api/products/:id', deleteProduct)
 
 // BRAND

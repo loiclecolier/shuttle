@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import '../FormsProduct.css'
 import { useSelector, useDispatch } from 'react-redux'
 import { getBrands } from '../../../../../redux/brands/brandReducer'
@@ -16,12 +16,17 @@ export default function AddProduct() {
     price: "",
     stock: "",
     isPromo: false,
-    percentagePromo: ""
+    percentagePromo: "",
+    image: ""
   })
+
+  const [previewImage, setPreviewImage] = useState(null)
 
   const [errors, setErrors] = useState({})
 
   const [toggle, setToggle] = useState(false)
+
+  const refImage = useRef()
 
   const {products, brands, categories} = useSelector(state => ({
     ...state.productReducer,
@@ -55,7 +60,20 @@ export default function AddProduct() {
     e.preventDefault()
 
     if (handleValidation()) {
-      dispatch(addProduct(product))
+
+      const formData = new FormData()
+      formData.append('name', product.name)
+      formData.append('slug', product.slug)
+      formData.append('description', product.description)
+      formData.append('category', product.category)
+      formData.append('brand', product.brand)
+      formData.append('price', product.price)
+      formData.append('stock', product.stock)
+      formData.append('isPromo', product.isPromo)
+      formData.append('percentagePromo', product.percentagePromo)
+      formData.append('image', product.image)
+
+      dispatch(addProduct(formData))
 
       toggleModal()
 
@@ -69,22 +87,23 @@ export default function AddProduct() {
         price: "",
         stock: "",
         isPromo: false,
-        percentagePromo: ""
+        percentagePromo: "",
+        image: ""
       })
+      setPreviewImage(null)
+      refImage.current.value = ""
     }
   }
 
   const handleInputs = e => {
-    if(e.target.name === 'name') setProduct({...product, name: e.target.value})
-    if(e.target.name === 'slug') setProduct({...product, slug: e.target.value})
-    if(e.target.name === 'description') setProduct({...product, description: e.target.value})
-    if(e.target.name === 'category') setProduct({...product, category: e.target.value})
-    if(e.target.name === 'brand') setProduct({...product, brand: e.target.value})
-    if(e.target.name === 'price') setProduct({...product, price: e.target.value})
-    if(e.target.name === 'stock') setProduct({...product, stock: e.target.value})
+    setProduct({...product, [e.target.name]: e.target.value})
     if(e.target.name === 'promo-yes') setProduct({...product, isPromo: true})
     if(e.target.name === 'promo-no') setProduct({...product, isPromo: false})
-    if(e.target.name === 'percent-promo') setProduct({...product, percentagePromo: e.target.value})
+  }
+
+  const handleImage = e => {
+    setProduct({...product, image: e.target.files[0]})
+    changePreviewImage(e.target.files[0])
   }
 
   const handleValidation = () => {
@@ -172,6 +191,9 @@ export default function AddProduct() {
       isValidForm = false
     } else setErrors(errors => ({...errors, percentagePromo: ""}))
 
+    // image validation
+    imageValidation(product.image)
+
     return isValidForm
   }
 
@@ -198,12 +220,43 @@ export default function AddProduct() {
     return false
   }
 
+  const imageValidation = (image) => {
+    if (!image) {
+      setErrors(errors => ({...errors, image: "L'image est requise"}))
+      return false
+    } 
+    else if (image.size >= 1000000) {
+      setErrors(errors => ({...errors, image: "La taille de l'image ne doit pas dépasser 1Mo"}))
+      return false
+    }
+    else if (image.type !== 'image/png'
+            && image.type !== 'image/jpg'
+            && image.type !== 'image/jpeg') {
+      setErrors(errors => ({...errors, image: "Le format de l'image n'est pas autorisé (formats autorisés : png, jpg, jpeg)"}))
+      return false
+    }
+    else {
+      setErrors(errors => ({...errors, image: ""}))
+      return true
+    }
+  }
+
+  const changePreviewImage = (image) => {
+    if(imageValidation(image)) {
+      setPreviewImage(URL.createObjectURL(image))
+    }
+    else {
+      setPreviewImage(null)
+    }
+  }
+
   return (
     <div className="product-page-form">
 
       <h1 className="form-product-title">Ajouter un produit</h1>
-      <form onSubmit={handleForm} className="product-form">
+      <form onSubmit={handleForm} encType='multipart/form-data' className="product-form">
         <div className="column">
+
           <div className="product-name"> 
             <label htmlFor="name">Nom</label>
             <input type="text" name="name" id="name" onChange={handleInputs} value={product.name}/>
@@ -273,12 +326,22 @@ export default function AddProduct() {
 
             {product.isPromo && (
               <div className="product-percent-promo">
-                <label htmlFor="percent-promo">Pourcentage de la promotion (%)</label>
-                <input type="number" name="percent-promo" id="percent-promo" step="0.01" min="0" max="100" onChange={handleInputs} value={product.percentagePromo} />
+                <label htmlFor="percentagePromo">Pourcentage de la promotion (%)</label>
+                <input type="number" name="percentagePromo" id="percentagePromo" step="0.01" min="0" max="100" onChange={handleInputs} value={product.percentagePromo} />
                 {errors.percentagePromo && <p className="error">{errors.percentagePromo}</p>}
               </div>
             )}
           </div>
+
+          <div className="product-image"> 
+              <label htmlFor="image">Image</label>
+              <input ref={refImage} type="file" accept=".png, .jpg, .jpeg" name="image" id="image" onChange={handleImage} />
+              {errors.image && <p className="error">{errors.image}</p>}
+              {previewImage &&
+                  <img className="preview-image" src={previewImage} alt="Prévisualisation"/>
+              }
+          </div>
+          
         </div>
         
         <div className="btn-form-product-container">

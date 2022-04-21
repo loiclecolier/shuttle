@@ -23,20 +23,6 @@ function productReducer(state = INITIAL_STATE, action)
                 products: newProducts
             }
         }
-        case "UPDATEPRODUCT": {
-            const oldProducts = [...state.products]
-            const newProducts = oldProducts.map(item => {
-                if (item._id === action.payload.id) {
-                    action.payload.price *= 100
-                    return action.payload
-                }
-                return item
-            })
-            return {
-                ...state,
-                products: newProducts
-            }
-        }
         default:
             return state
     }
@@ -57,19 +43,10 @@ export const getProducts = () => dispatch => {
     })
 }
 
-export const addProduct = (product) => dispatch => {
+export const addProduct = (formData) => dispatch => {
     fetch("/api/products", {
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json' 
-        },
         method: 'POST', 
-        body: JSON.stringify({
-            ...product,
-            "category": product.category === "" ? null : product.category,
-            "brand": product.brand === "" ? null : product.brand,
-            "price": product.price * 100 // convert cent
-        })
+        body: formData
     })
     .then(() => {
         fetch("/api/products")
@@ -83,24 +60,19 @@ export const addProduct = (product) => dispatch => {
     })
 }
 
-export const updateProduct = (product) => dispatch => {
+export const updateProduct = (product, formData) => dispatch => {
     fetch("/api/products/" + product.id, {
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json' 
-        },
         method: 'PATCH', 
-        body: JSON.stringify({
-            ...product,
-            "category": product.category === "" ? null : product.category,
-            "brand": product.brand === "" ? null : product.brand,
-            "price": product.price * 100 // convert cent
-        })
+        body: formData
     })
     .then(() => {
-        dispatch({
-            type: 'UPDATEPRODUCT',
-            payload: product
+        fetch("/api/products")
+        .then(res => res.json())
+        .then(data => {
+            dispatch({
+                type: 'LOADPRODUCTS',
+                payload: data.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0))
+            })
         })
     })
 }

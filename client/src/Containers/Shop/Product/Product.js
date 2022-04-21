@@ -4,12 +4,11 @@ import { useLocation } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { getBrands } from '../../../redux/brands/brandReducer'
 import { getCategories } from '../../../redux/categories/categoryReducer'
-import Placeholder from './placeholder-product.png'
 
 export default function Product() {
 
   const location = useLocation()
-  const { name, price, description } = location.state
+  const { name, price, description, image } = location.state
 
   const {brands, categories} = useSelector(state => ({
     ...state.brandReducer,
@@ -33,7 +32,7 @@ export default function Product() {
   return (
     <div className="product-page">
       <div className="product-image">
-        <img src={Placeholder} alt={name} />
+        <img src={image} alt={name} />
       </div>
       <div className="product-informations">
         <div className="product-txt">

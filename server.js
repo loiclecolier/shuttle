@@ -2,8 +2,15 @@ import express from 'express'
 import mongoose from 'mongoose'
 import routes from './routes/routes.js'
 import dotenv from 'dotenv'
+import cors from 'cors'
 
 dotenv.config()
+
+// Path avec ES module
+import path, { dirname } from 'path'
+import { fileURLToPath } from 'url'
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
 
 const PORT = process.env.PORT || 5000
 
@@ -18,6 +25,9 @@ mongoose.connect(process.env.MONGODB)
         .catch(() => console.log("MongoDB connection failed"))
 
 app.use(routes)
+
+app.use(cors())
+app.use('/images', express.static(path.join(__dirname, 'images')))
 
 app.listen(PORT, () => {
     console.log(`Server launched on port : ${PORT}`)

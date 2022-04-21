@@ -1,22 +1,39 @@
 import ProductModel from '../models/productModel.js'
 import CategoryModel from '../models/categoryModel.js'
 import BrandModel from '../models/brandModel.js'
+import * as fs from 'fs'
+
+// Path avec ES module
+import path, { dirname } from 'path'
+import { fileURLToPath } from 'url'
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
 
 // Create
 export const addProduct = async (req, res) => {
     try {
-        const product = new ProductModel(req.body)
+        const product = new ProductModel({
+            ...req.body,
+            category: req.body.category === "" ? null : req.body.category,
+            brand: req.body.brand === "" ? null : req.body.brand,
+            price: req.body.price * 100,
+            image: `${req.protocol}://${req.get('host')}/images/products/${req.file.filename}` 
+        })
         await product.save()
-        await CategoryModel.findOneAndUpdate(
-            { _id: req.body.category },
-            { $push: {products: product._id} },
-            { new: true }
-        )
-        await BrandModel.findOneAndUpdate(
-            { _id: req.body.brand },
-            { $push: {products: product._id} },
-            { new: true }
-        )
+        if (req.body.category) {
+            await CategoryModel.findOneAndUpdate(
+                { _id: req.body.category },
+                { $push: {products: product._id} },
+                { new: true }
+            )
+        }
+        if (req.body.brand) {
+            await BrandModel.findOneAndUpdate(
+                { _id: req.body.brand },
+                { $push: {products: product._id} },
+                { new: true }
+            )
+        }
         res.status(201).send("Product created")
     } catch (err) {
         res.status(400).send(err)
@@ -50,7 +67,25 @@ export const getProduct = async (req, res) => {
 // Update
 export const updateProduct = async (req, res) => {
     try {
-        const product = await ProductModel.findByIdAndUpdate(req.params.id, req.body)
+        const oldProduct = await ProductModel.find({ _id: req.params.id })
+
+        // delete image if changed
+        if (req.body.image !== "none") {
+            const filename = oldProduct[0].image.split('/images/products/')[1]
+            fs.unlink(`images/products/${filename}`, () => { return })
+        }
+        
+        const product = await ProductModel.findByIdAndUpdate(req.params.id,
+            {
+                ...req.body,
+                category: req.body.category === "" ? null : req.body.category,
+                brand: req.body.brand === "" ? null : req.body.brand,
+                price: req.body.price * 100, // convert cent
+                // if image = none -> not new image -> send old url image
+                // else send new image
+                image: req.body.image === "none" ? oldProduct[0].image : `${req.protocol}://${req.get('host')}/images/products/${req.file.filename}` 
+            }
+        )
         await product.save()
 
         // Delete old category and add new category
@@ -93,15 +128,20 @@ export const updateProduct = async (req, res) => {
 // Delete
 export const deleteProduct = async (req, res) => {
     try {
-        const product = await ProductModel.findByIdAndDelete(req.params.id)
-        await CategoryModel.findOneAndUpdate(
-            { _id: product.category },
-            { $pull: {products: product._id} }
-        )
-        await BrandModel.findOneAndUpdate(
-            { _id: product.brand },
-            { $pull: {products: product._id} },
-        )
+        const product = await ProductModel.find({ _id: req.params.id })
+        const filename = product[0].image.split('/images/products/')[1]
+        fs.unlink(`images/products/${filename}`, async () => {
+            await ProductModel.findByIdAndDelete(req.params.id)
+            await CategoryModel.findOneAndUpdate(
+                { _id: product.category },
+                { $pull: {products: product._id} }
+            )
+            await BrandModel.findOneAndUpdate(
+                { _id: product.brand },
+                { $pull: {products: product._id} },
+            )
+        })
+
         res.status(201).send("Product deleted")
     }
     catch (err) {

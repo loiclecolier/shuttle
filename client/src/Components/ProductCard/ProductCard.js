@@ -1,17 +1,16 @@
 import React from 'react'
 import './ProductCard.css'
 import { Link } from 'react-router-dom'
-import Placeholder from './placeholder-product.png'
 
 export default function ProductCard({product}) {
 
-  const { slug, name, price } = product
+  const { slug, name, price, image } = product
 
   return (
     <Link to={'/shop/' + slug} state={product} className="link-product-card">
       <div className="product-card">
           <div className="product-image">
-            <img src={Placeholder} alt="Produit" />
+            <img src={image} alt="Produit" />
           </div>
           <div className="product-informations">
             <div className="product-name">{name}</div>

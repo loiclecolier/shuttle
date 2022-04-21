@@ -15,17 +15,20 @@ export default function UpdateProduct() {
         name: location.state.name,
         slug: location.state.slug,
         description: location.state.description,
-        category: location.state.category,
-        brand: location.state.brand,
+        category: location.state.category === null ? "" : location.state.category,
+        brand: location.state.brand === null ? "" : location.state.brand,
         price: location.state.price / 100,
         stock: location.state.stock,
         isPromo: location.state.isPromo,
-        percentagePromo: location.state.percentagePromo
+        percentagePromo: location.state.percentagePromo === null ? "" : location.state.percentagePromo,
+        image: location.state.image
     })
 
     const [errors, setErrors] = useState({})
 
     const [toggle, setToggle] = useState(false)
+
+    const [previewImage, setPreviewImage] = useState(location.state.image)
 
     const {products, brands, categories} = useSelector(state => ({
         ...state.productReducer,
@@ -59,25 +62,41 @@ export default function UpdateProduct() {
         e.preventDefault()
 
         if (handleValidation()) {
-            dispatch(updateProduct(product))
+
+            const formData = new FormData()
+            formData.append('name', product.name)
+            formData.append('slug', product.slug)
+            formData.append('description', product.description)
+            formData.append('category', product.category)
+            formData.append('brand', product.brand)
+            formData.append('price', product.price)
+            formData.append('stock', product.stock)
+            formData.append('isPromo', product.isPromo)
+            formData.append('percentagePromo', product.percentagePromo)
+            // si l'image a été changée = objet
+            if (typeof product.image == 'object') {
+              formData.append('image', product.image)
+            } else { // sinon on renvoie false
+              formData.append('image', "none")
+            }
+
+            dispatch(updateProduct(product, formData))
 
             toggleModal()
             
-            setProduct({...product, price: product.price})
+            setProduct({...product})
         }
     }
 
     const handleInputs = e => {
-        if(e.target.name === 'name') setProduct({...product, name: e.target.value})
-        if(e.target.name === 'slug') setProduct({...product, slug: e.target.value})
-        if(e.target.name === 'description') setProduct({...product, description: e.target.value})
-        if(e.target.name === 'category') setProduct({...product, category: e.target.value})
-        if(e.target.name === 'brand') setProduct({...product, brand: e.target.value})
-        if(e.target.name === 'price') setProduct({...product, price: e.target.value})
-        if(e.target.name === 'stock') setProduct({...product, stock: e.target.value})
-        if(e.target.name === 'promo-yes') setProduct({...product, isPromo: true})
-        if(e.target.name === 'promo-no') setProduct({...product, isPromo: false})
-        if(e.target.name === 'percent-promo') setProduct({...product, percentagePromo: e.target.value})
+      setProduct({...product, [e.target.name]: e.target.value})
+      if(e.target.name === 'promo-yes') setProduct({...product, isPromo: true})
+      if(e.target.name === 'promo-no') setProduct({...product, isPromo: false})
+    }
+
+    const handleImage = e => {
+      setProduct({...product, image: e.target.files[0]})
+      changePreviewImage(e.target.files[0])
     }
 
     const handleValidation = () => {
@@ -165,6 +184,9 @@ export default function UpdateProduct() {
             isValidForm = false
         } else setErrors(errors => ({...errors, percentagePromo: ""}))
 
+        // image validation
+        imageValidation(product.image)
+
         return isValidForm
     }
 
@@ -193,6 +215,34 @@ export default function UpdateProduct() {
         }
         return false
     }
+
+    const imageValidation = (image) => {
+      if (typeof image === 'object') { // only if new image added
+        if (image.size >= 1000000) {
+          setErrors(errors => ({...errors, image: "La taille de l'image ne doit pas dépasser 1Mo"}))
+          return false
+        }
+        else if (image.type !== 'image/png'
+                && image.type !== 'image/jpg'
+                && image.type !== 'image/jpeg') {
+          setErrors(errors => ({...errors, image: "Le format de l'image n'est pas autorisé (formats autorisés : png, jpg, jpeg)"}))
+          return false
+        }
+        else {
+          setErrors(errors => ({...errors, image: ""}))
+          return true
+        } 
+      }
+    }
+
+  const changePreviewImage = (image) => {
+    if(imageValidation(image)) {
+      setPreviewImage(URL.createObjectURL(image))
+    }
+    else {
+      setPreviewImage(null)
+    }
+  }
 
   return (
     <div className="product-page-form">
@@ -269,12 +319,22 @@ export default function UpdateProduct() {
 
             {product.isPromo && (
               <div className="product-percent-promo">
-                <label htmlFor="percent-promo">Pourcentage de la promotion (%)</label>
-                <input type="number" name="percent-promo" id="percent-promo" step="0.01" min="0" max="100" onChange={handleInputs} value={product.percentagePromo} />
+                <label htmlFor="percentagePromo">Pourcentage de la promotion (%)</label>
+                <input type="number" name="percentagePromo" id="percentagePromo" step="0.01" min="0" max="100" onChange={handleInputs} value={product.percentagePromo} />
                 {errors.percentagePromo && <p className="error">{errors.percentagePromo}</p>}
               </div>
             )}
           </div>
+
+          <div className="product-image"> 
+              <label htmlFor="image">Sélectionner une image</label>
+              <input type="file" accept=".png, .jpg, .jpeg" name="image" id="image" onChange={handleImage} />
+              {errors.image && <p className="error">{errors.image}</p>}
+              {previewImage &&
+                  <img className="preview-image" src={previewImage} alt="Prévisualisation"/>
+              }
+          </div>
+
         </div>
         
         <div className="btn-form-product-container">

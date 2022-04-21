@@ -40,6 +40,9 @@ const ProductSchema = new mongoose.Schema({
     percentagePromo: {
         type: Number,
         default: 0
+    },
+    image: {
+        type: String
     }
 })
 
