@@ -327,7 +327,7 @@ export default function AddProduct() {
             {product.isPromo && (
               <div className="product-percent-promo">
                 <label htmlFor="percentagePromo">Pourcentage de la promotion (%)</label>
-                <input type="number" name="percentagePromo" id="percentagePromo" step="0.01" min="0" max="100" onChange={handleInputs} value={product.percentagePromo} />
+                <input type="number" name="percentagePromo" id="percentagePromo" step="1" min="0" max="100" onChange={handleInputs} value={product.percentagePromo} />
                 {errors.percentagePromo && <p className="error">{errors.percentagePromo}</p>}
               </div>
             )}

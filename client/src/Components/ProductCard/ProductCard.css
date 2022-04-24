@@ -3,6 +3,7 @@
 }
 
 .product-card {
+    position: relative;
     max-width: 250px;
     border: 1px solid rgb(220, 220, 220);
     border-radius: 5px;
@@ -21,9 +22,8 @@
     object-fit: contain;
 }
 
-.product-card .product-informations {
-    display: flex;
-    justify-content: space-between;
+.product-card .product-name,
+.product-card .product-price {
     padding: calc(15 * var(--res));
     padding-top: 0;
     color: #222;
@@ -48,4 +48,29 @@
 
 .product-card .product-add:hover {
     background-color: #3BB296;
+}
+
+.product-card .product-promo {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    font-size: clamp(0.6rem, 2vw, 1rem);
+    background-color: rgb(255, 59, 59);
+    color: #FFF;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.product-card .product-price .promo {
+    text-decoration: line-through;
+}
+
+.product-card .product-price .promo-value {
+    padding-left: 5px;
+    color:rgb(255, 59, 59);
 }

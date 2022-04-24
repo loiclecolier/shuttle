@@ -1,11 +1,41 @@
 .product-filter {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     width: 70%;
     padding: 15px 3vw;
-    font-size: clamp(0.8rem, 2vw, 1.1rem);
+    font-size: clamp(0.75rem, 2vw, 1rem);
 }
 
 .product-filter > * {
     margin-right: 3vw;
+}
+
+.product-filter select {
+    width: 150px;
+}
+
+.product-filter input[type=number] {
+    width: 50px;
+}
+
+.product-filter #priceMin,
+.product-filter .label-price {
+    margin-right: 5px;
+}
+
+.product-filter #priceMax,
+.product-filter .label-promo {
+    margin-left: 5px;
+}
+
+.product-filter .label-promo {
+    padding-bottom: 10px;
+}
+
+.product-filter input,
+.product-filter select {
+    border: 1px solid rgb(220, 220, 220);
+    border-radius: 3px;
+    font-size: clamp(0.75rem, 2vw, 1rem);
 }

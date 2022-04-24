@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import './ViewProducts.css'
 import { useSelector, useDispatch } from 'react-redux'
 import { deleteProduct, getProducts } from '../../../../redux/products/productReducer'
@@ -9,6 +9,15 @@ import Filterbar from '../../../../Components/Filterbar/Filterbar'
 import Loader from '../../../../Components/Loader/Loader'
 
 export default function ViewProducts() {
+
+  const [searchValue, setSearchValue] = useState("")
+  const [filter, setFilter] = useState({
+    category: "",
+    brand: "",
+    isPromotion: false,
+    priceMin: "",
+    priceMax: ""
+  })
 
   const {products, loadingProducts, brands, categories} = useSelector(state => ({
     ...state.productReducer,
@@ -50,11 +59,57 @@ export default function ViewProducts() {
     dispatch(deleteProduct(id))
   }
 
+  const searchedProducts = products.filter((product) => {
+    if (searchValue === '') {
+        return products
+    }
+    else {
+        return product.name.toLowerCase().includes(searchValue.toLowerCase())
+    }
+  })
+
+  const filteredProducts = searchedProducts.filter(product => {
+
+    if (filter.brand !== "" && filter.brand !== product.brand)
+      return false
+
+    if (filter.category !== "" && filter.category !== product.category)
+      return false
+
+    if (filter.isPromotion && filter.isPromotion !== product.isPromo)
+      return false
+
+    if (product.isPromo) {
+      if (filter.priceMin !== "" && (product.price - ((product.price / 100 * product.percentagePromo))) < (filter.priceMin * 100)) {
+        return false
+      }
+    }
+    else {
+      if (filter.priceMin !== "" && product.price < (filter.priceMin * 100))
+        return false
+    }
+
+    if (product.isPromo) {
+      if (filter.priceMax !== "" && (product.price - ((product.price / 100 * product.percentagePromo))) > (filter.priceMax * 100)) {
+        return false
+      }
+    }
+    else {
+      if (filter.priceMax !== "" && product.price > (filter.priceMax * 100))
+        return false
+    }
+
+    return product
+  })
+
   return <>
     <h1 className="dashboard-products-title">Liste des produits</h1>
-    <Filterbar />
+    <Filterbar
+      searchValue={searchValue} setSearchValue={setSearchValue}
+      filter={filter} setFilter={setFilter}
+    />
     {!loadingProducts ?
-      products.length > 0 ?
+      filteredProducts.length > 0 ?
         <table className="dashboard-products-list">
           <thead>
               <tr>
@@ -68,7 +123,7 @@ export default function ViewProducts() {
               </tr>
           </thead>
           <tbody>
-            {products.map(item => {
+            {filteredProducts.map(item => {
               return (
                 <tr className="product-item" key={item._id}>
                   <td className="slug">{item.slug}</td>
@@ -106,7 +161,9 @@ export default function ViewProducts() {
             )})}
           </tbody>
         </table>
-      : <p className="dashboard-empty-list">La liste des produits est vide.</p>
+      : searchValue === "" ?
+        <p className="dashboard-empty-list">Aucun produit en vente actuellement.</p>
+        : <p className="dashboard-empty-list">Aucun produit ne correspond à : {searchValue}</p>
     : <div className="dashboard-product-loader"><Loader /></div>
     }
   </>

@@ -86,3 +86,12 @@
     width: 100%;
     max-width: 200px;
 }
+
+.product-page .product-price .promo {
+    text-decoration: line-through;
+}
+
+.product-page .product-price .promo-value {
+    padding-left: 15px;
+    color:rgb(255, 59, 59);
+}

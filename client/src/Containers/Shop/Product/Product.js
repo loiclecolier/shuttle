@@ -8,7 +8,7 @@ import { getCategories } from '../../../redux/categories/categoryReducer'
 export default function Product() {
 
   const location = useLocation()
-  const { name, price, description, image } = location.state
+  const { name, price, description, image, isPromo, percentagePromo } = location.state
 
   const {brands, categories} = useSelector(state => ({
     ...state.brandReducer,
@@ -42,7 +42,12 @@ export default function Product() {
               ).map(brand => brand.name)}</span>
           </h1>
 
-          <div className="product-price">{(price / 100).toFixed(2)}€</div>
+          <div className="product-price">
+            <span className={isPromo ? "promo" : ""}>{(price / 100).toFixed(2)}€</span>
+            {isPromo && <span className="promo-value">
+              {((price / 100) - ((price / 10000 * percentagePromo))).toFixed(2)}€
+            </span>}
+          </div>
 
           {(categories.filter(category => category._id === location.state.category).map(category => category.name)).length > 0 &&
             <div className="product-category">
