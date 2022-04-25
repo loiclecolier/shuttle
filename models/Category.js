@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 
-const BrandSchema = new mongoose.Schema({
+const CategorySchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
@@ -10,8 +10,8 @@ const BrandSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Product"
     }]
-})
+}, { timestamps: true })
 
-const Brand = mongoose.model('Brand', BrandSchema)
+const Category = mongoose.model('Category', CategorySchema)
 
-export default Brand
+export default Category
