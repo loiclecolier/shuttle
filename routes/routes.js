@@ -2,9 +2,11 @@ import express from 'express'
 import { addProduct, getProducts, getProduct, updateProduct, deleteProduct } from '../controllers/product.js'
 import { addBrand, getBrands, getBrand, updateBrand, deleteBrand } from '../controllers/brand.js'
 import { addCategory, getCategories, getCategory, updateCategory, deleteCategory } from '../controllers/category.js'
-import { register, login } from '../controllers/auth.js'
+import { addCart, deleteCart, getCart, getCarts, updateCart } from '../controllers/cart.js'
+import { addOrder, deleteOrder, getMonthlyIncome, getOrders, getUserOrders, updateOrder } from '../controllers/order.js'
 import { getUser, getUsers, updateUser, deleteUser, getUserStats } from '../controllers/user.js'
-import { verifyTokenAndAdmin, verifyTokenAndAuthorization } from '../middlewares/verifyToken.js'
+import { register, login } from '../controllers/auth.js'
+import { verifyToken, verifyTokenAndAdmin, verifyTokenAndAuthorization } from '../middlewares/verifyToken.js'
 import multer from '../config/multer-config.js'
 
 // création d'un router
@@ -43,10 +45,19 @@ router.put('/api/users/:id', verifyTokenAndAdmin, updateUser)
 router.delete('/api/users/:id', verifyTokenAndAuthorization, deleteUser)
 
 // CART
-
+router.get('/api/carts/:userId', verifyTokenAndAuthorization, getCart)
+router.get('/api/carts', verifyTokenAndAdmin, getCarts)
+router.post('/api/carts', verifyToken, addCart)
+router.put('/api/carts/:id', verifyTokenAndAuthorization, updateCart)
+router.delete('/api/carts/:id', verifyTokenAndAuthorization, deleteCart)
 
 // ORDER
-
+router.get('/api/orders/income', verifyTokenAndAdmin, getMonthlyIncome)
+router.get('/api/orders/:userId', verifyTokenAndAuthorization, getUserOrders)
+router.get('/api/orders', verifyTokenAndAdmin, getOrders)
+router.post('/api/orders', verifyToken, addOrder)
+router.put('/api/orders/:id', verifyTokenAndAdmin, updateOrder)
+router.delete('/api/orders/:id', verifyTokenAndAdmin, deleteOrder)
 
 // si aucune route ne correspond à l'API -> renvoyer vers l'app react
 // router.get('/*', (_, res) => {
