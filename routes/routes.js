@@ -6,6 +6,7 @@ import { addCart, deleteCart, getCart, getCarts, updateCart } from '../controlle
 import { addOrder, deleteOrder, getMonthlyIncome, getOrders, getUserOrders, updateOrder } from '../controllers/order.js'
 import { getUser, getUsers, updateUser, deleteUser, getUserStats } from '../controllers/user.js'
 import { register, login } from '../controllers/auth.js'
+import { payment } from '../controllers/stripe.js'
 import { verifyToken, verifyTokenAndAdmin, verifyTokenAndAuthorization } from '../middlewares/verifyToken.js'
 import multer from '../config/multer-config.js'
 
@@ -58,6 +59,9 @@ router.get('/api/orders', verifyTokenAndAdmin, getOrders)
 router.post('/api/orders', verifyToken, addOrder)
 router.put('/api/orders/:id', verifyTokenAndAdmin, updateOrder)
 router.delete('/api/orders/:id', verifyTokenAndAdmin, deleteOrder)
+
+// STRIPE
+router.post('/api/checkout/payment', payment)
 
 // si aucune route ne correspond à l'API -> renvoyer vers l'app react
 // router.get('/*', (_, res) => {

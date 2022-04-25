@@ -24,9 +24,10 @@ mongoose.connect(process.env.MONGODB)
         .then(() => console.log("MongoDB connected"))
         .catch(() => console.log("MongoDB connection failed"))
 
+app.use(cors())
+
 app.use(routes)
 
-app.use(cors())
 app.use('/images', express.static(path.join(__dirname, 'images')))
 
 app.listen(PORT, () => {

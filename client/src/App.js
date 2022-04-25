@@ -14,6 +14,7 @@ import ViewProducts from "./Containers/Dashboard/Products/ViewProducts/ViewProdu
 import CommandsDashboard from "./Containers/Dashboard/Commands/Commands"
 import UsersDashboard from "./Containers/Dashboard/Users/Users"
 import StatisticsDashboard from "./Containers/Dashboard/Statistics/Statistics"
+import Home from "./Containers/Home/Home"
 
 function App() {
   return (
@@ -22,7 +23,7 @@ function App() {
 
       <div className="content">
         <Routes>
-          <Route path='/' element={<h1>Home</h1>} />
+          <Route path='/' element={<Home />} />
           <Route path='/shop' element={<Shop />} />
           <Route path='/shop/:slug' element={<Product />} />
           <Route path='/guide' element={<h1>Guide</h1>} />
