@@ -48,7 +48,7 @@ export default function ViewProducts() {
   }, [])
 
   function goToProduct(item) {
-    navigate('/shop/' + item.slug, {state: item});
+    navigate('/' + item.slug, {state: item});
   }
 
   function goToUpdateProduct(item) {
@@ -162,7 +162,7 @@ export default function ViewProducts() {
           </tbody>
         </table>
       : searchValue === "" ?
-        <p className="dashboard-empty-list">Aucun produit en vente actuellement.</p>
+        <p className="dashboard-empty-list">Aucun produit ne correspond aux filtres.</p>
         : <p className="dashboard-empty-list">Aucun produit ne correspond à : {searchValue}</p>
     : <div className="dashboard-product-loader"><Loader /></div>
     }

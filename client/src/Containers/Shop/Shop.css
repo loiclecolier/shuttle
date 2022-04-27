@@ -1,0 +1,8 @@
+.banner-promotion {
+    background-color: #0fa0b5;
+    color: #FFF;
+    font-size: clamp(0.7rem, 2vw, 1rem);
+    text-align: center;
+    padding: 5px 10px;
+    margin-bottom: 20px;
+}

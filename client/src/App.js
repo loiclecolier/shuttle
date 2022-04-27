@@ -1,6 +1,6 @@
 import Navbar from "./Components/Navbar/Navbar"
 import Footer from "./Components/Footer/Footer"
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router-dom'
 import Shop from './Containers/Shop/Shop'
 import Product from "./Containers/Shop/Product/Product"
 import Dashboard from "./Containers/Dashboard/Dashboard"
@@ -14,21 +14,25 @@ import ViewProducts from "./Containers/Dashboard/Products/ViewProducts/ViewProdu
 import CommandsDashboard from "./Containers/Dashboard/Commands/Commands"
 import UsersDashboard from "./Containers/Dashboard/Users/Users"
 import StatisticsDashboard from "./Containers/Dashboard/Statistics/Statistics"
-import Home from "./Containers/Home/Home"
+import Cart from "./Containers/Users/Cart/Cart"
+import Login from "./Containers/Users/Login/Login"
+import Register from "./Containers/Users/Register/Register"
 
 function App() {
+
+  const user = false
+
   return (
     <>
       <Navbar />
 
       <div className="content">
         <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/shop' element={<Shop />} />
-          <Route path='/shop/:slug' element={<Product />} />
-          <Route path='/guide' element={<h1>Guide</h1>} />
-          <Route path='/about' element={<h1>À propos</h1>} />
-          <Route path='/contact' element={<h1>Contact</h1>} />
+          <Route path='/' element={<Shop />} />
+          <Route path='/:slug' element={<Product />} />
+          <Route path='/cart' element={!user ? <Navigate to="/login" /> : <Cart />} />
+          <Route path='/login' element={user ? <Navigate to="/" /> : <Login />} />
+          <Route path='/register' element={user ? <Navigate to="/" /> : <Register />} />
           <Route path='/dashboard' element={<Dashboard />}>
             <Route path='/dashboard/home' element={<HomeDashboard />} />
             <Route path='/dashboard/products' element={<ProductsDashboard />}>

@@ -7,7 +7,7 @@ export default function ProductCard({product}) {
   const { slug, name, price, image, isPromo, percentagePromo } = product
 
   return (
-    <Link to={'/shop/' + slug} state={product} className="link-product-card">
+    <Link to={'/' + slug} state={product} className="link-product-card">
       <div className="product-card">
           {isPromo &&
             <div className="product-promo">

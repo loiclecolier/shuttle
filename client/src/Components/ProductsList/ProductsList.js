@@ -77,7 +77,7 @@ export default function ProductsList({ searchValue, setSearchValue, filter, setF
           })}
         </div>
       : searchValue === "" ?
-        <p className="shop-empty-list">Aucun produit ne correspond.</p>
+        <p className="shop-empty-list">Aucun produit ne correspond aux filtres.</p>
         : <p className="shop-empty-list">Aucun produit ne correspond à : {searchValue}</p>
     : <div className="products-loader"><Loader /></div>}
   </>
