@@ -95,3 +95,9 @@
     padding-left: 15px;
     color:rgb(255, 59, 59);
 }
+
+.product-page .stock-empty-verif {
+    font-size: clamp(0.8rem, 1vw, 1rem);
+    color: rgb(220, 53, 69);
+    margin-top: 10px;
+}

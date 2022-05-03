@@ -1,15 +1,14 @@
-import { createStore, applyMiddleware, combineReducers } from 'redux'
-import productReducer from './products/productReducer'
-import brandReducer from './brands/brandReducer'
-import categoryReducer from './categories/categoryReducer'
-import thunk from 'redux-thunk'
+import { configureStore } from '@reduxjs/toolkit'
+import productsReducer from './slices/productsSlice'
+import brandsReducer from './slices/brandsSlice'
+import categoriesReducer from './slices/categoriesSlice'
 
-const rootReducer = combineReducers({
-    productReducer,
-    brandReducer,
-    categoryReducer
+const store = configureStore({
+    reducer: {
+        products: productsReducer,
+        brands: brandsReducer,
+        categories: categoriesReducer
+    }
 })
-
-const store = createStore(rootReducer, applyMiddleware(thunk))
 
 export default store

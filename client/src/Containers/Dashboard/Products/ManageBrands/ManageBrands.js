@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import './ManageBrands.css'
 import { useSelector, useDispatch } from 'react-redux'
-import { getBrands, deleteBrand, updateBrand, addBrand } from '../../../../redux/brands/brandReducer'
+import { getBrands, deleteBrand, updateBrand, addBrand } from '../../../../redux/services/brandsService'
 import Loader from '../../../../Components/Loader/Loader'
 
 export default function ManageBrands() {
@@ -10,32 +10,30 @@ export default function ManageBrands() {
       name: ''
   })
 
-  const {loadingBrands, brands} = useSelector(state => ({
-    ...state.brandReducer
-  }))
+  const brands = useSelector(state => state.brands.brands)
+  const pending = useSelector(state => state.brands.getPending)
+  const error = useSelector(state => state.brands.getError)
 
   const dispatch = useDispatch()
 
   useEffect(() => {
 
-    setTimeout(() => {
-      if (brands.length === 0) {
-        dispatch(getBrands())
-      }
-    }, 2000)
+    if (brands.length === 0) {
+      getBrands(dispatch)
+    }
 
   }, [])
 
   const handleUpdate = async (e, brand) => {
     if (e.target.value !== "") {
-      brand.name = e.target.value
-      dispatch(updateBrand(brand))
+      const brandUpdated = {...brand, name: e.target.value}
+      updateBrand(brandUpdated, dispatch)
     }
   }
 
   const handleAdd = async () => {
     if (brandInput) {
-      dispatch(addBrand(brandInput))
+      addBrand(brandInput, dispatch)
       setBrandInput({ name: "" })
     }
   }
@@ -44,13 +42,13 @@ export default function ManageBrands() {
     setBrandInput({ name: e.target.value })
   }
 
-  const handleDelete = async (id) => {
-    dispatch(deleteBrand(id))
+  const handleDelete = async (_id) => {
+    deleteBrand(_id, dispatch)
   }
 
   return <>
     <h1 className="dashboard-products-title">Liste des marques</h1>
-    {!loadingBrands ?
+    {(!pending && !error) ?
       brands.length > 0 ?
         <table className="dashboard-brands-list">
           <thead>
@@ -81,6 +79,8 @@ export default function ManageBrands() {
           </tbody>
         </table>
       : <p className="dashboard-empty-list">La liste des marques est vide.</p>
+    : error ?
+      <p className="dashboard-empty-list">Une erreur est survenue, veuillez réessayer.</p>
     : <div className="dashboard-product-loader"><Loader /></div>
     }
   </>

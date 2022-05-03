@@ -1,9 +1,10 @@
 import React, { useEffect, useState, useRef } from 'react'
 import '../FormsProduct.css'
 import { useSelector, useDispatch } from 'react-redux'
-import { getBrands } from '../../../../../redux/brands/brandReducer'
-import { getCategories } from '../../../../../redux/categories/categoryReducer'
-import { getProducts, addProduct } from '../../../../../redux/products/productReducer'
+import { getBrands } from '../../../../../redux/services/brandsService'
+import { getCategories } from '../../../../../redux/services/categoriesService'
+import { getProducts, addProduct } from '../../../../../redux/services/productsService'
+import Loader from '../../../../../Components/Loader/Loader'
 
 export default function AddProduct() {
 
@@ -28,26 +29,34 @@ export default function AddProduct() {
 
   const refImage = useRef()
 
-  const {products, brands, categories} = useSelector(state => ({
-    ...state.productReducer,
-    ...state.brandReducer,
-    ...state.categoryReducer
-  }))
+  const products = useSelector(state => state.products.products)
+  const getProductsPending = useSelector(state => state.products.getPending)
+  const getProductsError = useSelector(state => state.products.getError)
+  const addProductPending = useSelector(state => state.products.addPending)
+  const addProductError = useSelector(state => state.products.addError)
+
+  const brands = useSelector(state => state.brands.brands)
+  const brandsPending = useSelector(state => state.brands.getPending)
+  const brandsError = useSelector(state => state.brands.getError)
+
+  const categories = useSelector(state => state.categories.categories)
+  const categoriesPending = useSelector(state => state.categories.getPending)
+  const categoriesError = useSelector(state => state.categories.getError)
 
   const dispatch = useDispatch()
 
   useEffect(() => {
 
     if (products.length === 0) {
-      dispatch(getProducts())
+      getProducts(dispatch)
     }
 
     if (brands.length === 0) {
-      dispatch(getBrands())
+      getBrands(dispatch)
     }
 
     if (categories.length === 0) {
-      dispatch(getCategories())
+      getCategories(dispatch)
     }
 
   }, [])
@@ -73,25 +82,27 @@ export default function AddProduct() {
       formData.append('percentagePromo', product.percentagePromo)
       formData.append('image', product.image)
 
-      dispatch(addProduct(formData))
+      addProduct(formData, dispatch)
 
       toggleModal()
 
-      // reset
-      setProduct({
-        name: "",
-        slug: "",
-        description: "",
-        category: "",
-        brand: "",
-        price: "",
-        stock: "",
-        isPromo: false,
-        percentagePromo: "",
-        image: ""
-      })
-      setPreviewImage(null)
-      refImage.current.value = ""
+      if (!addProductError) {
+        // reset
+        setProduct({
+          name: "",
+          slug: "",
+          description: "",
+          category: "",
+          brand: "",
+          price: "",
+          stock: "",
+          isPromo: false,
+          percentagePromo: "",
+          image: ""
+        })
+        setPreviewImage(null)
+        refImage.current.value = ""
+      }
     }
   }
 
@@ -252,7 +263,8 @@ export default function AddProduct() {
 
   return (
     <div className="product-page-form">
-
+    {(!getProductsPending && !brandsPending && !categoriesPending
+      && !getProductsError && !brandsError && !categoriesError) ? <>
       <h1 className="form-product-title">Ajouter un produit</h1>
       <form onSubmit={handleForm} encType='multipart/form-data' className="product-form">
         <div className="column">
@@ -347,17 +359,25 @@ export default function AddProduct() {
         <div className="btn-form-product-container">
           <button className="btn-form-product">Ajouter le produit</button>
         </div>
-
-        {toggle && ( <>
-          <div className="overlay-modal" onClick={toggleModal}></div>
-
-          <div className="modal" onClick={toggleModal}>
-            <svg width="1em" height="1em" viewBox="0 0 1024 1024" className="modal-icon"><path fill="#30967E" d="M512 64a448 448 0 1 1 0 896a448 448 0 0 1 0-896zm-55.808 536.384l-99.52-99.584a38.4 38.4 0 1 0-54.336 54.336l126.72 126.72a38.272 38.272 0 0 0 54.336 0l262.4-262.464a38.4 38.4 0 1 0-54.272-54.336L456.192 600.384z"></path></svg>
-            <p className="modal-content">Produit ajouté avec succès</p>
-          </div>
-        </> )}
-
       </form>
-    </div>
+    </>
+    : (getProductsError || brandsError || categoriesError) ?
+      <p>Une erreur est survenue, veuillez réessayer.</p>
+      : <div className="products-loader"><Loader /></div>
+  }
+  {(!addProductPending && !addProductError && toggle) &&
+    <>
+        <div className="overlay-modal" onClick={toggleModal}></div>
+
+        <div className="modal" onClick={toggleModal}>
+          <svg width="1em" height="1em" viewBox="0 0 1024 1024" className="modal-icon"><path fill="#30967E" d="M512 64a448 448 0 1 1 0 896a448 448 0 0 1 0-896zm-55.808 536.384l-99.52-99.584a38.4 38.4 0 1 0-54.336 54.336l126.72 126.72a38.272 38.272 0 0 0 54.336 0l262.4-262.464a38.4 38.4 0 1 0-54.272-54.336L456.192 600.384z"></path></svg>
+          <p className="modal-content">Produit ajouté avec succès</p>
+        </div>
+      </>
+  }
+  {addProductError &&
+    <p>Une erreur est survenue, veuillez réessayer.</p>
+  }
+  </div>
   )
 }

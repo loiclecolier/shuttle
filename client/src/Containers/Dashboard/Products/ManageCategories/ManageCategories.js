@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import './ManageCategories.css'
 import { useSelector, useDispatch } from 'react-redux'
-import { getCategories, deleteCategory, updateCategory, addCategory } from '../../../../redux/categories/categoryReducer'
+import { getCategories, deleteCategory, updateCategory, addCategory } from '../../../../redux/services/categoriesService'
 import Loader from '../../../../Components/Loader/Loader'
 
 export default function ManageCategories() {
@@ -10,32 +10,30 @@ export default function ManageCategories() {
       name: ''
   })
 
-  const {loadingCategories, categories} = useSelector(state => ({
-    ...state.categoryReducer
-  }))
+  const categories = useSelector(state => state.categories.categories)
+  const pending = useSelector(state => state.categories.getPending)
+  const error = useSelector(state => state.categories.getError)
 
   const dispatch = useDispatch()
 
   useEffect(() => {
 
-    setTimeout(() => {
-      if (categories.length === 0) {
-        dispatch(getCategories())
-      }
-    }, 2000)
+    if (categories.length === 0) {
+      getCategories(dispatch)
+    }
 
   }, [])
 
   const handleUpdate = async (e, category) => {
     if (e.target.value !== "") {
-      category.name = e.target.value
-      dispatch(updateCategory(category))
+      const categoryUpdated = {...category, name: e.target.value}
+      updateCategory(categoryUpdated, dispatch)
     }
   }
 
   const handleAdd = async () => {
     if (categoryInput) {
-      dispatch(addCategory(categoryInput))
+      addCategory(categoryInput, dispatch)
       setCategoryInput({ name: "" })
     }
   }
@@ -44,13 +42,13 @@ export default function ManageCategories() {
     setCategoryInput({ name: e.target.value })
   }
 
-  const handleDelete = async (id) => {
-    dispatch(deleteCategory(id))
+  const handleDelete = async (_id) => {
+    deleteCategory(_id, dispatch)
   }
 
   return <>
     <h1 className="dashboard-products-title">Liste des catégories</h1>
-    {!loadingCategories ?
+    {(!pending && !error) ?
       categories.length > 0 ?
         <table className="dashboard-brands-list">
           <thead>
@@ -81,7 +79,9 @@ export default function ManageCategories() {
           </tbody>
         </table>
       : <p className="dashboard-empty-list">La liste des catégories est vide.</p>
-    : <div className="dashboard-product-loader"><Loader /></div>
+    : error ?
+      <p className="dashboard-empty-list">Une erreur est survenue, veuillez réessayer.</p>
+      : <div className="dashboard-product-loader"><Loader /></div>
     }
   </>
 }

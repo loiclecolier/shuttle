@@ -84,9 +84,9 @@ export const updateProduct = async (req, res) => {
                 // if image = none -> not new image -> send old url image
                 // else send new image
                 image: req.body.image === "none" ? oldProduct[0].image : `${req.protocol}://${req.get('host')}/images/products/${req.file.filename}` 
-            }
+            },
+            { new: true }
         )
-        const updatedProduct = await product.save()
 
         // Delete old category and add new category
         if (req.body.category) {
@@ -117,6 +117,8 @@ export const updateProduct = async (req, res) => {
                 { new: true }
             )
         }
+        
+        const updatedProduct = await product.save()
         
         res.status(201).json(updatedProduct)
     }

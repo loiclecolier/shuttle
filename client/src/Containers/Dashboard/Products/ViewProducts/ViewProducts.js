@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import './ViewProducts.css'
 import { useSelector, useDispatch } from 'react-redux'
-import { deleteProduct, getProducts } from '../../../../redux/products/productReducer'
-import { getBrands } from '../../../../redux/brands/brandReducer'
-import { getCategories } from '../../../../redux/categories/categoryReducer'
+import { deleteProduct, getProducts } from '../../../../redux/services/productsService'
+import { getBrands } from '../../../../redux/services/brandsService'
+import { getCategories } from '../../../../redux/services/categoriesService'
 import { useNavigate } from 'react-router-dom';
 import Filterbar from '../../../../Components/Filterbar/Filterbar'
 import Loader from '../../../../Components/Loader/Loader'
@@ -19,11 +19,17 @@ export default function ViewProducts() {
     priceMax: ""
   })
 
-  const {products, loadingProducts, brands, categories} = useSelector(state => ({
-    ...state.productReducer,
-    ...state.brandReducer,
-    ...state.categoryReducer
-  }))
+  const products = useSelector(state => state.products.products)
+  const productsPending = useSelector(state => state.products.getPending)
+  const productsError = useSelector(state => state.products.getError)
+
+  const brands = useSelector(state => state.brands.brands)
+  const brandsPending = useSelector(state => state.brands.getPending)
+  const brandsError = useSelector(state => state.brands.getError)
+
+  const categories = useSelector(state => state.categories.categories)
+  const categoriesPending = useSelector(state => state.categories.getPending)
+  const categoriesError = useSelector(state => state.categories.getError)
 
   const dispatch = useDispatch()
 
@@ -31,18 +37,16 @@ export default function ViewProducts() {
 
   useEffect(() => {
 
-    setTimeout(() => {
-      if (products.length === 0) {
-        dispatch(getProducts())
-      }
-    }, 2000)
+    if (products.length === 0) {
+      getProducts(dispatch)
+    }
 
     if (brands.length === 0) {
-      dispatch(getBrands())
+      getBrands(dispatch)
     }
 
     if (categories.length === 0) {
-      dispatch(getCategories())
+      getCategories(dispatch)
     }
 
   }, [])
@@ -55,8 +59,8 @@ export default function ViewProducts() {
     navigate('/dashboard/products/update/' + item.slug, {state: item});
   }
 
-  const handleDelete = async (id) => {
-    dispatch(deleteProduct(id))
+  const handleDelete = async (_id) => {
+    deleteProduct(_id, dispatch)
   }
 
   const searchedProducts = products.filter((product) => {
@@ -108,7 +112,8 @@ export default function ViewProducts() {
       searchValue={searchValue} setSearchValue={setSearchValue}
       filter={filter} setFilter={setFilter}
     />
-    {!loadingProducts ?
+    {(!productsPending && !brandsPending && !categoriesPending
+    && !productsError && !brandsError && !categoriesError) ?
       filteredProducts.length > 0 ?
         <table className="dashboard-products-list">
           <thead>
@@ -164,7 +169,9 @@ export default function ViewProducts() {
       : searchValue === "" ?
         <p className="dashboard-empty-list">Aucun produit ne correspond aux filtres.</p>
         : <p className="dashboard-empty-list">Aucun produit ne correspond à : {searchValue}</p>
-    : <div className="dashboard-product-loader"><Loader /></div>
+    : (productsError || brandsError || categoriesError) ?
+      <p className="dashboard-empty-list">Une erreur est survenue, veuillez réessayer.</p>
+      : <div className="dashboard-product-loader"><Loader /></div>
     }
   </>
 }

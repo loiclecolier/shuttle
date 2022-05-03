@@ -13,6 +13,7 @@
 }
 
 .banner-products img {
+    margin-top: 20px;
     width: calc(500 * var(--res));
     text-align: center;
     color: #30967E;

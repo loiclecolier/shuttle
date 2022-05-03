@@ -1,33 +1,60 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import './Product.css'
 import { useLocation } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import { getBrands } from '../../../redux/brands/brandReducer'
-import { getCategories } from '../../../redux/categories/categoryReducer'
+import { getBrands } from '../../../redux/services/brandsService'
+import { getCategories } from '../../../redux/services/categoriesService'
 
 export default function Product() {
 
-  const location = useLocation()
-  const { name, price, description, image, isPromo, percentagePromo } = location.state
+  const [quantity, setQuantity] = useState(1)
+  const [error, setError] = useState("")
 
-  const {brands, categories} = useSelector(state => ({
-    ...state.brandReducer,
-    ...state.categoryReducer
-  }))
+  const location = useLocation()
+  const { name, price, description, image, isPromo, percentagePromo, stock } = location.state
+
+  const brands = useSelector(state => state.brands.brands)
+  const categories = useSelector(state => state.categories.categories)
 
   const dispatch = useDispatch()
 
   useEffect(() => {
 
     if (brands.length === 0) {
-      dispatch(getBrands())
+      getBrands(dispatch)
     }
 
     if (categories.length === 0) {
-      dispatch(getCategories())
+      getCategories(dispatch)
     }
 
   }, [])
+
+  const addProductInCart = () => {
+    if (handleValidation()) {
+      console.log("Ajouté au panier")
+    }
+  }
+
+  const handleQuantity = e => {
+    setQuantity(e.target.value)
+  }
+
+  const handleValidation = () => {
+    let isValidForm = true
+
+    // Quantity validation
+    if (!quantity) {
+      setError("La quantité est requise")
+      isValidForm = false
+    }
+    else if (quantity > stock) {
+      setError("Il ne reste que " + stock + " exemplaires de ce produit")
+      isValidForm = false
+    } else setError("")
+
+    return isValidForm
+  }
 
   return (
     <div className="product-page">
@@ -62,11 +89,14 @@ export default function Product() {
         </div>
         <div className="product-quantity">
           <label htmlFor="quantity">Quantité</label>
-          <input type="number" name="quantity" id="quantity" value="1" />
+          <input type="number" name="quantity" id="quantity" value={quantity} onChange={handleQuantity} min="1" />
         </div>
-        <button className="product-add">
+        <button className="product-add" onClick={addProductInCart}>
             Ajouter au panier
         </button>
+        {error &&
+          <p className="stock-empty-verif">{error}</p>
+        }
       </div>
     </div>
   )
