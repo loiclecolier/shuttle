@@ -1,10 +1,13 @@
 .header {
+    position: fixed;
     width: 100%;
     height: 75px;
     display: flex;
     justify-content: space-between;
     border-bottom: 1px solid rgb(220, 220, 220);
     padding: 15px 3vw;
+    background-color: #F7F6F1;
+    z-index: 1;
 }
 
 .logo {
@@ -65,5 +68,22 @@
 }
 
 .navbar-menu-item-cart a {
+    position: relative;
     color: #222;
+}
+
+.badge-cart {
+    position: absolute;
+    top: -17.5px;
+    right: -10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #30967E;
+    color: #FFF;
+    width: 20px;
+    height: 20px;
+    border-radius: 15px;
+    line-height: 0;
+    font-size: clamp(10px, 1vw, 15px);
 }

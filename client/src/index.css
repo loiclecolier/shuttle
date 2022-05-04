@@ -60,6 +60,7 @@ input[type="search"]::-webkit-search-results-decoration { display: none; }
 .content {
     flex: 1;
     margin-bottom: 30px;
+    margin-top: 75px;
 }
 
 .overlay-modal {

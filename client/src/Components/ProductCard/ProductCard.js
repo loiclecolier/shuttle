@@ -1,14 +1,24 @@
 import React from 'react'
 import './ProductCard.css'
+import { useDispatch } from 'react-redux'
+import { addProduct } from '../../redux/slices/cartSlice'
 import { Link } from 'react-router-dom'
 
 export default function ProductCard({product}) {
 
+  const quantity = 1
+
   const { slug, name, price, image, isPromo, percentagePromo } = product
 
+  const dispatch = useDispatch()
+
+  const addProductInCart = () => {
+      dispatch(addProduct({ ...product, quantity }))
+  }
+
   return (
-    <Link to={'/' + slug} state={product} className="link-product-card">
       <div className="product-card">
+        <Link to={'/' + slug} state={product} className="link-product-card">
           {isPromo &&
             <div className="product-promo">
               {percentagePromo}%
@@ -24,10 +34,10 @@ export default function ProductCard({product}) {
               {((price / 100) - ((price / 10000 * percentagePromo))).toFixed(2)}€
             </span>}
           </div>
-          <button className="product-add">
-            Ajouter au panier
-          </button>
+        </Link>
+        <button className="product-add" onClick={addProductInCart}>
+          Ajouter au panier
+        </button>
       </div>
-    </Link>
   )
 }

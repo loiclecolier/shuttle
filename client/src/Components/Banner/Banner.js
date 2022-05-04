@@ -11,7 +11,7 @@ export default function Banner() {
         <div className="promo">
             Promo !<br/>- 50 %
         </div>
-        <Link to="container-products" spy={true} smooth={true}>
+        <Link to="container-products" spy={true} smooth={true} offset={-75}>
             <button>Voir les produits</button>
         </Link>
     </div>

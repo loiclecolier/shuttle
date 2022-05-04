@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { getBrands } from '../../../redux/services/brandsService'
 import { getCategories } from '../../../redux/services/categoriesService'
+import { addProduct } from '../../../redux/slices/cartSlice'
 
 export default function Product() {
 
@@ -11,7 +12,7 @@ export default function Product() {
   const [error, setError] = useState("")
 
   const location = useLocation()
-  const { name, price, description, image, isPromo, percentagePromo, stock } = location.state
+  const product = location.state
 
   const brands = useSelector(state => state.brands.brands)
   const categories = useSelector(state => state.categories.categories)
@@ -32,7 +33,7 @@ export default function Product() {
 
   const addProductInCart = () => {
     if (handleValidation()) {
-      console.log("Ajouté au panier")
+      dispatch(addProduct({ ...product, quantity }))
     }
   }
 
@@ -48,8 +49,8 @@ export default function Product() {
       setError("La quantité est requise")
       isValidForm = false
     }
-    else if (quantity > stock) {
-      setError("Il ne reste que " + stock + " exemplaires de ce produit")
+    else if (quantity > product.stock) {
+      setError("Il ne reste que " + product.stock + " exemplaires de ce produit")
       isValidForm = false
     } else setError("")
 
@@ -59,32 +60,32 @@ export default function Product() {
   return (
     <div className="product-page">
       <div className="product-image">
-        <img src={image} alt={name} />
+        <img src={product.image} alt={product.name} />
       </div>
       <div className="product-informations">
         <div className="product-txt">
 
-          <h1 className="product-name-brand">{name} <span>{brands.filter(
-              brand => brand._id === location.state.brand
+          <h1 className="product-name-brand">{product.name} <span>{brands.filter(
+              brand => brand._id === product.brand
               ).map(brand => brand.name)}</span>
           </h1>
 
           <div className="product-price">
-            <span className={isPromo ? "promo" : ""}>{(price / 100).toFixed(2)}€</span>
-            {isPromo && <span className="promo-value">
-              {((price / 100) - ((price / 10000 * percentagePromo))).toFixed(2)}€
+            <span className={product.isPromo ? "promo" : ""}>{(product.price / 100).toFixed(2)}€</span>
+            {product.isPromo && <span className="promo-value">
+              {((product.price / 100) - ((product.price / 10000 * product.percentagePromo))).toFixed(2)}€
             </span>}
           </div>
 
-          {(categories.filter(category => category._id === location.state.category).map(category => category.name)).length > 0 &&
+          {(categories.filter(category => category._id === product.category).map(category => category.name)).length > 0 &&
             <div className="product-category">
               <span>Catégorie</span><p>{categories.filter(
-                category => category._id === location.state.category
+                category => category._id === product.category
                 ).map(category => category.name)}</p>
             </div>
           }
 
-          {description && <div className="product-description"><span>Description</span><p>{description}</p></div> }
+          {product.description && <div className="product-description"><span>Description</span><p>{product.description}</p></div> }
           
         </div>
         <div className="product-quantity">

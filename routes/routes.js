@@ -61,11 +61,16 @@ router.put('/api/users/:id', verifyTokenAndAdmin, updateUser)
 router.delete('/api/users/:id', verifyTokenAndAuthorization, deleteUser)
 
 // CART
-router.get('/api/carts/:userId', verifyTokenAndAuthorization, getCart)
-router.get('/api/carts', verifyTokenAndAdmin, getCarts)
-router.post('/api/carts', verifyToken, addCart)
-router.put('/api/carts/:id', verifyTokenAndAuthorization, updateCart)
-router.delete('/api/carts/:id', verifyTokenAndAuthorization, deleteCart)
+// router.get('/api/carts/:userId', verifyTokenAndAuthorization, getCart)
+// router.get('/api/carts', verifyTokenAndAdmin, getCarts)
+// router.post('/api/carts', verifyToken, addCart)
+// router.put('/api/carts/:id', verifyTokenAndAuthorization, updateCart)
+// router.delete('/api/carts/:id', verifyTokenAndAuthorization, deleteCart)
+router.get('/api/carts/:userId', getCart)
+router.get('/api/carts', getCarts)
+router.post('/api/carts', addCart)
+router.put('/api/carts/:id', updateCart)
+router.delete('/api/carts/:id', deleteCart)
 
 // ORDER
 router.get('/api/orders/income', verifyTokenAndAdmin, getMonthlyIncome)

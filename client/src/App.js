@@ -14,13 +14,13 @@ import ViewProducts from "./Containers/Dashboard/Products/ViewProducts/ViewProdu
 import CommandsDashboard from "./Containers/Dashboard/Commands/Commands"
 import UsersDashboard from "./Containers/Dashboard/Users/Users"
 import StatisticsDashboard from "./Containers/Dashboard/Statistics/Statistics"
-import Cart from "./Containers/Users/Cart/Cart"
+import Cart from "./Containers/Cart/Cart"
 import Login from "./Containers/Users/Login/Login"
 import Register from "./Containers/Users/Register/Register"
 
 function App() {
 
-  const user = false
+  const user = true
 
   return (
     <>
