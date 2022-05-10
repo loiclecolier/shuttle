@@ -1,6 +1,7 @@
 import Navbar from "./Components/Navbar/Navbar"
 import Footer from "./Components/Footer/Footer"
 import { Routes, Route, Navigate } from 'react-router-dom'
+import { useSelector } from "react-redux"
 import Shop from './Containers/Shop/Shop'
 import Product from "./Containers/Shop/Product/Product"
 import Dashboard from "./Containers/Dashboard/Dashboard"
@@ -17,10 +18,11 @@ import StatisticsDashboard from "./Containers/Dashboard/Statistics/Statistics"
 import Cart from "./Containers/Cart/Cart"
 import Login from "./Containers/Users/Login/Login"
 import Register from "./Containers/Users/Register/Register"
+import Success from "./Containers/Success/Success"
 
 function App() {
 
-  const user = true
+  const user = useSelector(state => state.user.currentUser)
 
   return (
     <>
@@ -31,9 +33,10 @@ function App() {
           <Route path='/' element={<Shop />} />
           <Route path='/:slug' element={<Product />} />
           <Route path='/cart' element={!user ? <Navigate to="/login" /> : <Cart />} />
+          <Route path='/success' element={!user ? <Navigate to="/login" /> : <Success />} />
           <Route path='/login' element={user ? <Navigate to="/" /> : <Login />} />
           <Route path='/register' element={user ? <Navigate to="/" /> : <Register />} />
-          <Route path='/dashboard' element={<Dashboard />}>
+          <Route path='/dashboard' element={user && user.isAdmin ? <Dashboard /> : <Navigate to="/" />}>
             <Route path='/dashboard/home' element={<HomeDashboard />} />
             <Route path='/dashboard/products' element={<ProductsDashboard />}>
               <Route path='/dashboard/products' element={<ViewProducts />} />

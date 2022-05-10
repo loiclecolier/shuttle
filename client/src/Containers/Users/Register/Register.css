@@ -1,0 +1,86 @@
+.page-register {
+    margin: 50px auto;
+    padding: 0 20px;
+}
+
+.page-register .form-register {
+    position: relative;
+    margin: auto;
+    width: 100%;
+    max-width: 400px;
+    border: 1px solid rgb(220, 220, 220);
+    padding: 30px 2.5%;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.page-register img {
+    position: absolute;
+    width: 60px;
+    height: auto;
+    top: -30px;
+    left: calc(50% - 30px);
+}
+
+.page-register h2 {
+    font-size: clamp(1.2rem, 2vw, 1.5rem);
+    margin-bottom: 20px;
+}
+
+.page-register label {
+    padding-bottom: 5px;
+}
+
+.page-register .form-register div {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.page-register .form-register .input-name, 
+.page-register .form-register .input-firstname, 
+.page-register .form-register .input-email,
+.page-register .form-register .input-password {
+    margin-bottom: 15px;
+}
+
+.page-register .form-register .input-confirm-password {
+    margin-bottom: 30px;
+}
+
+.page-register .form-register input {
+    display: block;
+    width: 100%;
+    padding: 7.5px 5px;
+    border: 1px solid rgb(220, 220, 220);
+    border-radius: 3px;
+}
+
+.page-register button {
+    width: 100%;
+    cursor: pointer;
+    background-color: #30967E;
+    color: #FFF;
+    border: none;
+    border-radius: 3px;
+    padding: 7.5px 5px;
+    transition: .3s;
+}
+
+.page-register button:disabled {
+    cursor: not-allowed;
+    background-color: #29846e;
+}
+
+.page-register button:hover {
+    background-color: #29846e;
+}
+
+.page-register .form-register .error {
+    font-size: clamp(0.6rem, 1vw, 0.9rem);
+    color: rgb(220, 53, 69);
+    margin-top: 5px;
+}

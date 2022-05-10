@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import './Cart.css'
-import { Link } from 'react-router-dom'
-import { useSelector, useDispatch } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 import StripeCheckout from 'react-stripe-checkout'
 import Logo from '../../assets/favicon.svg'
 
@@ -15,7 +15,10 @@ export default function Cart() {
 
     const [stripeToken, setStripeToken] = useState(null)
 
+    const navigate = useNavigate()
+
     useEffect(() => {
+        console.log(cart)
         const makeRequest = async () => {
             try {
                 const res = await fetch("/api/checkout/payment", {
@@ -29,15 +32,15 @@ export default function Cart() {
                         amount: total * 100
                     })
                 })
-                console.log(res.data)
+                navigate('/success', {data: res.data})
             } catch (err) {
                 console.log(err)
             }
         }
-        if (stripeToken) {
+        if (stripeToken && total >= 0.01) {
             makeRequest()
         }
-    }, [stripeToken])
+    }, [stripeToken, total, navigate])
 
     const onToken = (token) => {
         setStripeToken(token)
@@ -60,7 +63,7 @@ export default function Cart() {
         <div className="cart-content">
             <div className="cart-products">
                 {cart.products.map(product => (
-                    <div className="cart-product">
+                    <div className="cart-product" key={product._id}>
                         <img src={product.image} alt="Nom du produit" />
                         <div className="cart-product-informations">
                             <div className="cart-product-name">

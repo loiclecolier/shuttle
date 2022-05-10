@@ -120,6 +120,7 @@ export default function AddProduct() {
   const handleValidation = () => {
 
     let isValidForm = true
+    
     const regexSlug = /^[a-z0-9]+(?:(?:-|_)+[a-z0-9]+)*$/gm
 
     // Name validation

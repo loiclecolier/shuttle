@@ -1,13 +1,20 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { logout } from '../../redux/slices/userSlice'
 import { Link, NavLink } from 'react-router-dom'
 import Logo from '../../assets/logo.svg'
 import './Navbar.css'
 
 export default function Navbar() {
 
-    const user = false
     const quantity = useSelector(state => state.cart.quantity)
+    const user = useSelector(state => state.user.currentUser)
+
+    const dispatch = useDispatch()
+
+    const logoutUser = () => {
+        dispatch(logout())
+    }
 
   return (
     <nav className="header">
@@ -29,6 +36,11 @@ export default function Navbar() {
                     }}>
                     S'inscrire
                     </NavLink>
+                </li>
+            </>}
+            {user && <>
+                <li className="navbar-menu-item" onClick={logoutUser}>
+                    Se déconnecter
                 </li>
             </>}
             <li className="navbar-menu-item-cart">

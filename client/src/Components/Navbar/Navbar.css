@@ -36,7 +36,15 @@
 }
 
 .navbar-menu-item {
+    cursor: pointer;
     margin-right: calc(60 * var(--res));
+    font-size: clamp(0.8rem, 2vw, 1.25rem);
+    color: #222;
+    transition: .3s;
+}
+
+.navbar-menu-item:hover {
+    color: #30967E;
 }
 
 .navbar-menu-item:last-child {

@@ -1,0 +1,26 @@
+.success-page {
+    width: 100%;
+    max-width: 1300px;
+    text-align: center;
+    margin: auto;
+}
+
+.success-page h1 {
+    margin: 10vh 0;
+}
+.success-page button {
+    cursor: pointer;
+    font-family: 'Philosopher', sans-serif;
+    font-size: clamp(1rem, 2vw, 1.5rem);
+    background-color: transparent;
+    border: 2px solid #30967E;
+    color: #30967E;
+    border-radius: 5px;
+    padding: 7.5px 15px;
+    transition: .3s;
+}
+
+.success-page button:hover {
+    background-color: #30967E;
+    color: #FFF;
+}
