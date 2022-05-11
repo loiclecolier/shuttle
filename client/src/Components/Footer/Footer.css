@@ -19,7 +19,6 @@
 
 .footer-author a {
     color: #222;
-    font-size: clamp(0.7rem, 2vw, 1rem);
     transition: .3s;
 }
 
@@ -67,4 +66,32 @@
 
 .disclaimer a {
     color: #FFF;
+}
+
+@media screen and (max-width: 500px) {
+    .footer-logo, .footer-nav, .footer-author {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+    .footer-logo {
+        text-align: center;
+    }
+    .footer {
+        width: 100%;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin: auto;
+    }
+    .footer-nav {
+        text-align: center;
+    }
+    .footer-nav ul {
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+    }
+    .footer-nav ul li {
+        display: inline-block;
+    }
 }

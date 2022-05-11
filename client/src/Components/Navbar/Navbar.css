@@ -80,6 +80,10 @@
     color: #222;
 }
 
+.navbar-menu-item-cart svg {
+    width: calc(35 * var(--res));
+}
+
 .badge-cart {
     position: absolute;
     top: -17.5px;

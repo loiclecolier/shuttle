@@ -59,6 +59,10 @@ export default function Product() {
 
   return (
     <div className="product-page">
+      <h1 className="product-name-brand-mobile">{product.name} <span>{brands.filter(
+        brand => brand._id === product.brand
+        ).map(brand => brand.name)}</span>
+      </h1>
       <div className="product-image">
         <img src={product.image} alt={product.name} />
       </div>

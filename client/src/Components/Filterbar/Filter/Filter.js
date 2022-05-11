@@ -57,7 +57,7 @@ export default function Filter({ filter, setFilter }) {
             <input type="checkbox" id="isPromotion" name="isPromotion" onChange={handleInputs} checked={filter.isPromotion} />
             <label htmlFor="isPromotion" className="label-promo">En promotion</label>
         </div>
-        <div>
+        <div className="price-filter">
           <label className="label-price">Prix</label>
           <input type="number" id="priceMin" name="priceMin" placeholder="min" onChange={handleInputs} value={filter.priceMin} min="0"/>
            - 

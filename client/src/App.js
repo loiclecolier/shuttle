@@ -19,6 +19,7 @@ import Cart from "./Containers/Cart/Cart"
 import Login from "./Containers/Users/Login/Login"
 import Register from "./Containers/Users/Register/Register"
 import Success from "./Containers/Success/Success"
+import Disclaimer from "./Components/Disclaimer/Disclaimer"
 
 function App() {
 
@@ -26,6 +27,8 @@ function App() {
 
   return (
     <>
+      <Disclaimer />
+
       <Navbar />
 
       <div className="content">

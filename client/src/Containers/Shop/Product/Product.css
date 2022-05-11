@@ -26,12 +26,18 @@
     width: 50%;
 }
 
-.product-page .product-name-brand {
+.product-page .product-name-brand-mobile {
+    display: none;
+}
+
+.product-page .product-name-brand,
+.product-page .product-name-brand-mobile {
     font-weight: 600;
     margin-bottom: 5px;
 }
 
-.product-page .product-name-brand span {
+.product-page .product-name-brand span,
+.product-page .product-name-brand-mobile span {
     font-weight: 400;
     font-size: clamp(1rem, 3vw, 1.5rem);
 }
@@ -100,4 +106,23 @@
     font-size: clamp(0.8rem, 1vw, 1rem);
     color: rgb(220, 53, 69);
     margin-top: 10px;
+}
+
+@media screen and (max-width: 550px) {
+    .product-page {
+        flex-direction: column;
+    }
+    .product-page .product-image {
+        width: 100%;
+    }
+    .product-page .product-name-brand-mobile {
+        display: block;
+        line-height: 1.2;
+    }
+    .product-page .product-name-brand {
+        display: none;
+    }
+    .product-page .product-informations {
+        width: 100%;
+    }
 }

@@ -55,3 +55,24 @@
     border: 5px solid #F7F6F1;
     border-radius: calc(200 * var(--res));
 }
+
+@media screen and (max-width: 1200px) {
+    .banner-products .promo{
+        display: none;
+        align-items: flex-start;
+    }
+    .banner-products {
+        background-image: url("./player-bad.png");
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: 90% 0%;
+        align-items: flex-start;
+        padding-left: 10vw;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .banner-products {
+        display: none;
+    }
+}

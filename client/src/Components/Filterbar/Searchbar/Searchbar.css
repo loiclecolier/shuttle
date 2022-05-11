@@ -26,3 +26,11 @@
 .product-search input:focus + .search-icon {
     color: #222;
 }
+
+@media screen and (max-width: 1080px) {
+    .product-search {
+        width: 100%;
+        padding: 15px 0;
+        border-top: 1px solid rgb(220, 220, 220);
+    }
+}
