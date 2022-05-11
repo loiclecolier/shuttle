@@ -13,6 +13,7 @@ export default function Register() {
     password: ""
   })
   const [confirmPassword, setConfirmPassword] = useState("")
+  const [errorLogin, setErrorLogin] = useState(false)
 
   const [validation, setValidation] = useState({})
 
@@ -20,10 +21,11 @@ export default function Register() {
 
   const { isFetching, error } = useSelector((state) => state.user)
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     if(handleValidation()) {
-      register(dispatch, user)
+      await register(dispatch, user)
+      if(error) setErrorLogin(true)
     }
   }
 
@@ -143,7 +145,7 @@ export default function Register() {
 
         <div>
           <button type="submit" onClick={handleSubmit} disabled={isFetching}>S'inscrire</button>
-          {error && <p className="error">Une erreur est survenue, veuillez réessayer.</p>}
+          {errorLogin && <p className="error">Une erreur est survenue, veuillez réessayer.</p>}
         </div>
 
       </form>

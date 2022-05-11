@@ -10,15 +10,17 @@ export default function Login() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [validation, setValidation] = useState({})
+  const [errorLogin, setErrorLogin] = useState(false)
 
   const dispatch = useDispatch()
 
   const { isFetching, error } = useSelector((state) => state.user)
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     if(handleValidation()) {
-      login(dispatch, { email, password })
+      await login(dispatch, { email, password })
+      if(error) setErrorLogin(true)
     }
   }
 
@@ -76,7 +78,7 @@ export default function Login() {
 
         <div>
           <button type="submit" onClick={handleSubmit} disabled={isFetching}>Se connecter</button>
-          {error && <p className="error">Adresse email et/ou mot de passe incorrect</p>}
+          {errorLogin && <p className="error">Adresse email et/ou mot de passe incorrect</p>}
         </div>
 
       </form>

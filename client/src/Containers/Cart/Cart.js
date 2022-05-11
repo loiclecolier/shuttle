@@ -18,7 +18,6 @@ export default function Cart() {
     const navigate = useNavigate()
 
     useEffect(() => {
-        console.log(cart)
         const makeRequest = async () => {
             try {
                 const res = await fetch("/api/checkout/payment", {
