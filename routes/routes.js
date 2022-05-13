@@ -64,9 +64,9 @@ router.delete('/api/orders/:id', verifyTokenAndAdmin, deleteOrder)
 router.post('/api/checkout/payment', payment)
 
 // si aucune route ne correspond à l'API -> renvoyer vers l'app react
-// router.get('/*', (_, res) => {
-//     res.sendFile(path.join(__dirname, '../client/build/index.html'))
-// })
+router.get('/*', (_, res) => {
+    res.sendFile(path.join(__dirname, '../client/build/index.html'))
+})
 
 // export du router
 export default router
