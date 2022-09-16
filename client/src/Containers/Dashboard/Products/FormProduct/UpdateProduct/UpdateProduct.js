@@ -61,7 +61,7 @@ export default function UpdateProduct() {
             getCategories(dispatch)
         }
 
-    }, [])
+    }, [brands.length, categories.length, dispatch, products.length])
 
     const toggleModal = () => {
         setToggle(!toggle)

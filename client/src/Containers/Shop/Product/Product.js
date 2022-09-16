@@ -29,7 +29,7 @@ export default function Product() {
       getCategories(dispatch)
     }
 
-  }, [])
+  }, [brands.length, categories.length, dispatch])
 
   const addProductInCart = () => {
     if (handleValidation()) {

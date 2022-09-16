@@ -49,7 +49,7 @@ export default function ViewProducts() {
       getCategories(dispatch)
     }
 
-  }, [])
+  }, [brands.length, categories.length, dispatch, products.length])
 
   function goToProduct(item) {
     navigate('/' + item.slug, {state: item});

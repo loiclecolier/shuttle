@@ -19,7 +19,7 @@ export default function ProductsList({ searchValue, filter }) {
         getProducts(dispatch)
       }
 
-  }, [])
+  }, [dispatch, products.length])
 
   const searchedProducts = products.filter(product => {
     if (searchValue === '') {

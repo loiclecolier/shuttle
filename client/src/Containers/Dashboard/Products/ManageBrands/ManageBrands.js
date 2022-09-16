@@ -22,7 +22,7 @@ export default function ManageBrands() {
       getBrands(dispatch)
     }
 
-  }, [])
+  }, [brands.length, dispatch])
 
   const handleUpdate = async (e, brand) => {
     if (e.target.value !== "") {

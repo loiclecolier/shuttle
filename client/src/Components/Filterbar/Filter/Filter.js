@@ -26,7 +26,7 @@ export default function Filter({ filter, setFilter }) {
       getCategories(dispatch)
     }
 
-  }, [])
+  }, [brands.length, categories.length, dispatch])
 
   const handleInputs = e => {
     setFilter({...filter, [e.target.name]: e.target.value})

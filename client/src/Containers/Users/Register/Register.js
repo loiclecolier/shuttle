@@ -33,6 +33,7 @@ export default function Register() {
 
     let isValidForm = true
 
+    // eslint-disable-next-line no-useless-escape
     const regexEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g
 
     // Name validation

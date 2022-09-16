@@ -1,78 +1,58 @@
 .banner-products {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    position: relative;
     width: 100%;
-    height: calc(100vh - 115px);
-    border-bottom: 1px solid rgb(220, 220, 220);
-    background-image: url("./ellipse.svg"), url("./player-bad.png");
+    height: 80vh;
+    background-image: url('./logo-blanc.svg'), radial-gradient(100% 100% at 50% 50%, rgba(10, 10, 10, 0.6) 0%, rgb(15, 63, 111) 100%), url('./banner.jpg');
     background-repeat: no-repeat, no-repeat;
-    background-size: calc(550 * var(--res)), contain;
-    background-position: 0% 100%, 90% 0%;
-    margin-top: 20px;
-}
-
-.banner-products img {
-    margin-top: 20px;
-    width: calc(500 * var(--res));
-    text-align: center;
-    color: #30967E;
+    background-size: 30%, auto, cover;
+    background-position: 50% 25%, 100%, 40% 35%;
 }
 
 .banner-products button {
-    cursor: pointer;
-    font-family: 'Philosopher', sans-serif;
-    font-size: clamp(1rem, 2vw, 2rem);
-    background-color: transparent;
-    border: 3px solid #30967E;
+    position: absolute;
+    top: 70%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 20px;
+    padding: .5em 1.5em;
     border-radius: 5px;
-    padding: 10px 20px;
-    margin-top: 30vh;
-    color: #30967E;
-    transition: .3s;
+    border: 2px solid #FFF;
+    cursor: pointer;
+    transition: .5s;
+    background-color: transparent;
+    color: #FFF;
 }
 
 .banner-products button:hover {
     background-color: #30967E;
-    color: #FFF;
+    border-color: #30967E;
 }
 
-.banner-products .promo {
-    position: absolute;
-    top: 30vh;
-    left: 10vw;
-    background-color: rgb(255, 59, 59);
-    color: #FFF;
-    font-family: 'Philosopher', sans-serif;
-    font-size: clamp(1rem, 3vw, 4rem);
-    width: calc(400 * var(--res));
-    height: calc(400 * var(--res));
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    border: 5px solid #F7F6F1;
-    border-radius: calc(200 * var(--res));
-}
-
-@media screen and (max-width: 1200px) {
-    .banner-products .promo{
-        display: none;
-        align-items: flex-start;
-    }
+@media screen and (max-width: 1024px) {
     .banner-products {
-        background-image: url("./player-bad.png");
-        background-repeat: no-repeat;
-        background-size: contain;
-        background-position: 90% 0%;
-        align-items: flex-start;
-        padding-left: 10vw;
+        background-size: 40%, auto, cover;
+        background-position: 50% 25%, 100%, 40% 35%;
     }
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 768px) {
     .banner-products {
-        display: none;
+        background-size: 70%, auto, cover;
+        background-position: 55% 40%, 100%, 40% 35%;
+    }
+    .banner-products button {
+        width: 60vw;
+        position: absolute;
+        top: 80%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 18px;
+        padding: .5em 1.5em;
+        border-radius: 5px;
+        border: 2px solid #FFF;
+        cursor: pointer;
+        transition: .5s;
+        background-color: transparent;
+        color: #FFF;
     }
 }

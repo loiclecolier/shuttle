@@ -22,7 +22,7 @@ export default function ManageCategories() {
       getCategories(dispatch)
     }
 
-  }, [])
+  }, [categories.length, dispatch])
 
   const handleUpdate = async (e, category) => {
     if (e.target.value !== "") {
